@@ -3,22 +3,18 @@
 #include <iostream>
 #include <string>//奇怪
 
-
-//Screen dimension constants
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1080;
+#include "init.h"
+#include "media.h"
 
 //Starts up SDL and creates window
 bool init();
 
 //Loads media
-bool loadMedia();
 
 //Frees media and shuts down SDL
 void close();
 
-//Loads individual image
-SDL_Surface* loadSurface( std::string path );
+
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -26,75 +22,11 @@ SDL_Window* gWindow = NULL;
 //The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
 
-//Current displayed PNG image
-SDL_Surface* gPNGSurface = NULL;
+
 
 
 //此Demo用于实现摄像机画面的问题
 
-bool init()// 初始化方法，测试屏幕和那啥
-{
-	//Initialization flag
-	bool success = true;
-
-	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		std::cout << "SDL could not initialize! SDL Error: " << SDL_GetError() << std::endl;
-		success = false;
-	}
-	else
-	{
-		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-		if( gWindow == NULL ) // 判断一下窗口返回值是不是Null
-		{
-			std::cout << "Window could not be created! SDL Error: %s\n" << SDL_GetError() << std::endl;
-			success = false;// 也就意味着初始化失败
-		}
-		else
-		{
-			//Initialize PNG loading
-			//初始化PNG读取
-			//IMG_INIT_PNG似乎是一个常量
-			int imgFlags = IMG_INIT_PNG;
-			//这里使用了按位与运算符&，将IMG_Init的返回值与imgFlags进行按位与操作。
-			//这个操作可以用来检查初始化是否包含了imgFlags所代表的标志位。如果包含了，结果值将等于imgFlags；否则将不等于imgFlags。
-			if( !( IMG_Init( imgFlags ) & imgFlags ) )
-                // 最后将整个值取反
-                // 我也不懂为啥要这么写先这样吧
-			{
-				std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
-				success = false;
-			}
-			else
-			{
-				//Get window surface
-				gScreenSurface = SDL_GetWindowSurface( gWindow );
-			}
-		}
-	}
-
-	return success;
-}
-
-bool loadMedia()
-{
-	//Loading success flag
-	//加载成功标志
-	bool success = true;
-
-	//加载PNG图像 surface怎么翻译呢
-	gPNGSurface = loadSurface( "loaded.png" );
-	// loadSurface方法加载图像，加载失败就返回空。
-	if( gPNGSurface == NULL )
-	{
-		std::cout <<  "Failed to load PNG image!\n" << std::endl;
-		success = false;
-	}
-
-	return success;// 返回成功
-}
 
 void close()
 {

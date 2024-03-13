@@ -5,3 +5,27 @@
 	<iostream>
 	<string>
 
+1710323226 source:c:\users\33454\desktop\维护中\sdl2rtsgame\main.cpp
+	<SDL.h>
+	<SDL_image.h>
+	<iostream>
+	<string>
+	"init.h"
+	"media.h"
+
+1710320699 c:\users\33454\desktop\维护中\sdl2rtsgame\init.h
+
+1710322819 source:c:\users\33454\desktop\维护中\sdl2rtsgame\init.cpp
+	<SDL.h>
+	<SDL_image.h>
+	<iostream>
+	"main.h"
+
+1710323038 c:\users\33454\desktop\维护中\sdl2rtsgame\main.h
+
+1710323324 c:\users\33454\desktop\维护中\sdl2rtsgame\media.h
+
+1710323248 source:c:\users\33454\desktop\维护中\sdl2rtsgame\media.cpp
+	<iostream>
+	<SDL_image.h>
+
