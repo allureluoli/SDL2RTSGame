@@ -45,7 +45,12 @@
 		<ExtraCommands>
 			<Add after="XCOPY $(#sdl2)\bin\*.dll $(TARGET_OUTPUT_DIR) /D /Y" />
 		</ExtraCommands>
+		<Unit filename="Media.cpp" />
+		<Unit filename="init.cpp" />
+		<Unit filename="init.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
+		<Unit filename="media.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

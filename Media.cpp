@@ -14,7 +14,7 @@ bool loadMedia()
 	bool success = true;
 
 	//加载PNG图像 surface怎么翻译呢
-	gPNGSurface = loadSurface( "loaded.png" );
+	gPNGSurface = loadSurface( "res/image/loaded.png" );
 	// loadSurface方法加载图像，加载失败就返回空。
 	if( gPNGSurface == NULL )
 	{
