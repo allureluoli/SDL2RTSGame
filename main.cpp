@@ -14,7 +14,7 @@ bool init();
 
 
 //The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+SDL_Window* gWindow;
 
 
 
@@ -50,7 +50,7 @@ std::pair<SDL_Texture*, SDL_Renderer*> loadSurface( std::string path )// 接受p
     }
 
 
-	SDL_Texture* optimizedSurface = NULL;
+	SDL_Texture* optimizedSurface;
 
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
 
@@ -76,7 +76,7 @@ std::pair<SDL_Texture*, SDL_Renderer*> loadSurface( std::string path )// 接受p
 
 
             //释放内存
-            SDL_FreeSurface( loadedSurface );
+            SDL_FreeSurface(loadedSurface);
 
             return std::make_pair(optimizedSurface, renderer);
 
@@ -88,9 +88,10 @@ std::pair<SDL_Texture*, SDL_Renderer*> loadSurface( std::string path )// 接受p
 	return std::make_pair(optimizedSurface, renderer);// 返回 SDL_Texture*类型指针
 }
 
-int pos1 = 0;
-int pos2 = 0;
-bool posSetting = false;
+int pos1, pos2 = 0;
+
+bool posmode1,posmode2;
+
 
 int main( int argc, char* args[] )
 {
@@ -118,6 +119,9 @@ int main( int argc, char* args[] )
 
 			while( !quit )
 			{
+
+
+
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -126,39 +130,70 @@ int main( int argc, char* args[] )
 					{
 						quit = true;
 					}
+					if (e.type == SDL_KEYDOWN) {
+					//if ( e.key.keysym.sym == SDLK_a){
+                           // pos1+=100; 键盘输入
+					}
 				}
+                // 0 > x > -730
+                // 0> y > -1300
 
-				if (pos1 >500){
-
-                    posSetting = true;
-
+                // 那么一共有四个移动模式，向右动，向下动，向左动，向上动
+                // pos1是X pos2是Y
+				if (pos1 == -1300){//证明碰到了最下侧，则需要向上动
+                    posmode1=true;
 				}
-				if (pos1 == 0){
-
-                    posSetting = false;
+				if (pos1 == 0){// 证明碰到最上侧，需要向下动
+                    posmode1=false;
 				}
-
-                if (posSetting){
-                        pos1--;
-                        pos2--;
+				if (pos2 == -730){// 证明碰到最右侧，需要向左动
+                    posmode2=true;
+				}
+				if (pos2 == 0){// 证明碰到最左侧，需要向右动
+                    posmode2=false;
+				}
+                if (posmode1){
+                    pos1++;
                 }
                 else{
-
-                        pos1++;
-                        pos2++;
+                    pos1--;
+                }
+                if (posmode2){
+                    pos2++;
+                }
+                else{
+                    pos2--;
                 }
 
 
-				int textureWidth, textureHeight;
-                SDL_QueryTexture(gPNGSurface, NULL, NULL, &textureWidth, &textureHeight);
 
-                // 设置目标矩形，放大两倍
-                SDL_Rect destinationRect = {0, 0, textureWidth * 2, textureHeight * 2};
+
+				//int textureWidth, textureHeight;
+                //SDL_QueryTexture(gPNGSurface, NULL, NULL, &textureWidth, &textureHeight);
+                //std::cout << textureWidth << textureWidth << std::endl;
+                // 设置目标矩形，放大1.5倍
+                SDL_Rect srcrect = {0, 0, 1920, 1080}; // 调整位置      后两个参数是裁剪图像的像素
+
+
+
+
+
+
+                SDL_Rect destinationRect = {pos2, pos1, 2000,2000};
+
+
+
                 //SDL_RenderSetClipRect(renderer, &clipRect);
-                // 清空渲染目标
+
+
+
+                // 唯一方法就是修改 srcrect的X Y 坐标
+                // X 向右前进1000
+
+                //std::cout << pos2 << std::endl;
+
                 SDL_RenderClear(renderer);
 
-                SDL_Rect srcrect = {pos1/2, pos2/2, 1920, 1080};
 
                 SDL_RenderCopy(renderer, gPNGSurface, &srcrect, &destinationRect);
                 SDL_RenderPresent(renderer);
