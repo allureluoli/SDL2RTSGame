@@ -1,7 +1,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
-#include <string>//奇怪
+#include "main.h"
+
+//此Demo用于实现摄像机画面的问题
+
 
 #include "init.h"
 #include "media.h"
@@ -9,29 +12,17 @@
 //Starts up SDL and creates window
 bool init();
 
-//Loads media
-
-//Frees media and shuts down SDL
-void close();
-
-
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
-//The surface contained by the window
-SDL_Surface* gScreenSurface = NULL;
 
 
-
-
-//此Demo用于实现摄像机画面的问题
-
-
+//Frees media and shuts down SDL
 void close()
 {
-	//自由加载的图像
-	SDL_FreeSurface( gPNGSurface );
+
+    SDL_DestroyTexture( gPNGSurface );
 	gPNGSurface = NULL;
 
 	//Destroy window
@@ -43,48 +34,71 @@ void close()
 	SDL_Quit();
 }
 
-SDL_Surface* loadSurface( std::string path )// 接受path 返回SDL_Surface* 指针
-// 我删除了include <string> 依然能用 string类型
+
+
+// 使用路径读取图片的方法
+std::pair<SDL_Texture*, SDL_Renderer*> loadSurface( std::string path )// 接受path 返回SDL_Surface* 指针
 //
 {
-	//The final optimized image
-	// 最终图像
-	SDL_Surface* optimizedSurface = NULL;
+    // 两个指针变量
+    init();
+    SDL_Renderer* renderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
 
-	//读取在指定路径的图像
+    if (renderer == NULL) {
+    // 处理渲染器创建失败的情况
+    std::cout << "wwwwww" <<  SDL_GetError()<<std::endl;
+    }
+
+
+	SDL_Texture* optimizedSurface = NULL;
+
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-	if( loadedSurface == NULL )//经典如果是空的
+
+
+	if( loadedSurface == NULL )// 如果 IMG_Load读取失败则返回空 以此抛出错误
 	{
-		std::cout << "Unable to load image %s! SDL_image Error: " << path.c_str() << IMG_GetError() << std::endl;
+		std::cout << "Unable to load image ! SDL_image Error: " << path.c_str() << IMG_GetError() << std::endl;
 	}
 	else
 	{
 		//Convert surface to screen format
-		//将屏幕转换成图像
-		optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
-		if( optimizedSurface == NULL )
-		{
-			std::cout << "Unable to optimize image %s! SDL Error: " << path.c_str() << SDL_GetError() << std::endl;
-		}
 
-		//Get rid of old loaded surface
-		//去除旧屏幕
-		SDL_FreeSurface( loadedSurface );
+		//optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
+        // 使用SDL_ConvertSurface处理
+
+        SDL_Texture* optimizedSurface = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+
+        if( optimizedSurface == NULL )
+            {
+                std::cout << "Unable to optimize image %s! SDL Error: " << path.c_str() << SDL_GetError() << std::endl;
+            }
+        else{
+
+
+            //释放内存
+            SDL_FreeSurface( loadedSurface );
+
+            return std::make_pair(optimizedSurface, renderer);
+
+        }
+
 	}
 
-	return optimizedSurface;
+
+	return std::make_pair(optimizedSurface, renderer);// 返回 SDL_Texture*类型指针
 }
+
+int pos1 = 0;
+int pos2 = 0;
+bool posSetting = false;
 
 int main( int argc, char* args[] )
 {
 	//Start up SDL and create window
 	std::cout << "欢迎来到sdl2" << std::endl;
-	if( !init() )
-	{
-		std::cout << "Failed to initialize!\n" << std::endl;
-	}
-	else
-	{
+
+
+
 		//Load media
 		//加载图像
 		if( !loadMedia() )
@@ -101,7 +115,7 @@ int main( int argc, char* args[] )
 			SDL_Event e;
 
 			//While application is running
-			//运行循环
+
 			while( !quit )
 			{
 				//Handle events on queue
@@ -114,16 +128,43 @@ int main( int argc, char* args[] )
 					}
 				}
 
-				//Apply the PNG image
-				//应用图像
+				if (pos1 >500){
 
-				SDL_BlitSurface( gPNGSurface, NULL, gScreenSurface, NULL);
+                    posSetting = true;
 
-				//Update the surface
-				//刷新屏幕
+				}
+				if (pos1 == 0){
+
+                    posSetting = false;
+				}
+
+                if (posSetting){
+                        pos1--;
+                        pos2--;
+                }
+                else{
+
+                        pos1++;
+                        pos2++;
+                }
+
+
+				int textureWidth, textureHeight;
+                SDL_QueryTexture(gPNGSurface, NULL, NULL, &textureWidth, &textureHeight);
+
+                // 设置目标矩形，放大两倍
+                SDL_Rect destinationRect = {0, 0, textureWidth * 2, textureHeight * 2};
+                //SDL_RenderSetClipRect(renderer, &clipRect);
+                // 清空渲染目标
+                SDL_RenderClear(renderer);
+
+                SDL_Rect srcrect = {pos1/2, pos2/2, 1920, 1080};
+
+                SDL_RenderCopy(renderer, gPNGSurface, &srcrect, &destinationRect);
+                SDL_RenderPresent(renderer);
 				SDL_UpdateWindowSurface( gWindow );
 			}
-		}
+
 	}
 
 	//Free resources and close SDL
