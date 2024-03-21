@@ -1,9 +1,26 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include <SDL_mixer.h>
 
 #include "main.h"
 
+
+// 音频初始化
+int sound_init()
+{
+
+   #define TMP_FREQ  MIX_DEFAULT_FREQUENCY
+
+   #define TMP_FORMAT   MIX_DEFAULT_FORMAT
+
+   #define TMP_CHAN 2
+
+   #define TMP_CHUNK_SIZE 512
+
+  return Mix_OpenAudio(TMP_FREQ,TMP_FORMAT,TMP_CHAN,TMP_CHUNK_SIZE);
+
+}
 
 // 因为这些是第三方库，所以需要再次 include
 
@@ -58,6 +75,15 @@ bool init(){// 初始化
 
                     std::cout << "SDL_image 初始化成功 \n" << IMG_GetError() << std::endl;
 			}
+
+
+            sound_init(); // 音频初始化
+
+            std::cout << "SDL_mixer 初始化成功 \n" << IMG_GetError() << std::endl;
+
+
+
+
 		}
 	}
 

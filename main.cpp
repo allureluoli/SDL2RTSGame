@@ -41,7 +41,7 @@ std::pair<SDL_Texture*, SDL_Renderer*> loadSurface( std::string path )// 接受p
 //
 {
     // 两个指针变量
-    init();
+
     SDL_Renderer* renderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
 
     if (renderer == NULL) {
@@ -97,12 +97,14 @@ int main( int argc, char* args[] )
 {
 	//Start up SDL and create window
 	std::cout << "欢迎来到sdl2" << std::endl;
+    init();
+    PlayMusic(); // 音频播放
 
 
 
 		//Load media
 		//加载图像
-		if( !loadMedia() )
+		if( !loadBackground() )
 		{
 			std::cout << "Failed to load media!\n" << std::endl;
 		}
@@ -119,8 +121,6 @@ int main( int argc, char* args[] )
 
 			while( !quit )
 			{
-
-
 
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
@@ -166,38 +166,15 @@ int main( int argc, char* args[] )
                 }
 
 
-
-
-				//int textureWidth, textureHeight;
-                //SDL_QueryTexture(gPNGSurface, NULL, NULL, &textureWidth, &textureHeight);
-                //std::cout << textureWidth << textureWidth << std::endl;
                 // 设置目标矩形，放大1.5倍
                 SDL_Rect srcrect = {0, 0, 1920, 1080}; // 调整位置      后两个参数是裁剪图像的像素
-
-
-
-
-
-
                 SDL_Rect destinationRect = {pos2, pos1, 2000,2000};
-
-
-
-                //SDL_RenderSetClipRect(renderer, &clipRect);
-
-
-
-                // 唯一方法就是修改 srcrect的X Y 坐标
-                // X 向右前进1000
-
-                //std::cout << pos2 << std::endl;
-
                 SDL_RenderClear(renderer);
-
-
                 SDL_RenderCopy(renderer, gPNGSurface, &srcrect, &destinationRect);
                 SDL_RenderPresent(renderer);
 				SDL_UpdateWindowSurface( gWindow );
+
+
 			}
 
 	}

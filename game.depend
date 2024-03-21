@@ -5,7 +5,7 @@
 	<iostream>
 	<string>
 
-1710946662 source:c:\users\33454\desktop\维护中\sdl2rtsgame\main.cpp
+1710954374 source:c:\users\33454\desktop\维护中\sdl2rtsgame\main.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
@@ -15,21 +15,23 @@
 
 1710320699 c:\users\33454\desktop\维护中\sdl2rtsgame\init.h
 
-1710912768 source:c:\users\33454\desktop\维护中\sdl2rtsgame\init.cpp
+1710954323 source:c:\users\33454\desktop\维护中\sdl2rtsgame\init.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
+	<SDL_mixer.h>
 	"main.h"
 
 1710910541 c:\users\33454\desktop\维护中\sdl2rtsgame\main.h
 
-1710907876 c:\users\33454\desktop\维护中\sdl2rtsgame\media.h
+1710954285 c:\users\33454\desktop\维护中\sdl2rtsgame\media.h
 
-1710913303 source:c:\users\33454\desktop\维护中\sdl2rtsgame\media.cpp
+1710954258 source:c:\users\33454\desktop\维护中\sdl2rtsgame\media.cpp
 	<iostream>
 	<SDL_image.h>
 	<utility>
 	<tuple>
+	<SDL_mixer.h>
 	"main.h"
 	"media.h"
 
