@@ -1,20 +1,12 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+
 #include "main.h"
-
-//此Demo用于实现摄像机画面的问题
-
-
 #include "init.h"
 #include "media.h"
+#include "drawui.h"
 
-//Starts up SDL and creates window
-bool init();
-
-
-//The window we'll be rendering to
-SDL_Window* gWindow;
 
 
 
@@ -34,22 +26,11 @@ void close()
 	SDL_Quit();
 }
 
-
-
 // 使用路径读取图片的方法
-std::pair<SDL_Texture*, SDL_Renderer*> loadSurface( std::string path )// 接受path 返回SDL_Surface* 指针
+SDL_Texture* loadSurface( std::string path )// 接受path 返回SDL_Surface* 指针
 //
 {
     // 两个指针变量
-
-    SDL_Renderer* renderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
-
-    if (renderer == NULL) {
-    // 处理渲染器创建失败的情况
-    std::cout << "wwwwww" <<  SDL_GetError()<<std::endl;
-    }
-
-
 	SDL_Texture* optimizedSurface;
 
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
@@ -78,14 +59,14 @@ std::pair<SDL_Texture*, SDL_Renderer*> loadSurface( std::string path )// 接受p
             //释放内存
             SDL_FreeSurface(loadedSurface);
 
-            return std::make_pair(optimizedSurface, renderer);
+            return optimizedSurface;
 
         }
 
 	}
 
 
-	return std::make_pair(optimizedSurface, renderer);// 返回 SDL_Texture*类型指针
+	return optimizedSurface;// 返回 SDL_Texture*类型指针
 }
 
 int pos1, pos2 = 0;
@@ -93,20 +74,32 @@ int pos1, pos2 = 0;
 bool posmode1,posmode2;
 
 
+
+
+
 int main( int argc, char* args[] )
 {
+    init();
+
+
+    if (renderer == NULL) {
+    // 处理渲染器创建失败的情况
+    std::cout << "渲染器创建失败" <<  SDL_GetError()<<std::endl;
+    }
+
 	//Start up SDL and create window
 	std::cout << "欢迎来到sdl2" << std::endl;
-    init();
+
     PlayMusic(); // 音频播放
 
 
 
-		//Load media
+
+
 		//加载图像
 		if( !loadBackground() )
 		{
-			std::cout << "Failed to load media!\n" << std::endl;
+			std::cout << "Failed to load Background!\n" << std::endl;
 		}
 		else
 		{
@@ -140,13 +133,13 @@ int main( int argc, char* args[] )
 
                 // 那么一共有四个移动模式，向右动，向下动，向左动，向上动
                 // pos1是X pos2是Y
-				if (pos1 == -1300){//证明碰到了最下侧，则需要向上动
+				if (pos1 == -1270){//证明碰到了最下侧，则需要向上动
                     posmode1=true;
 				}
 				if (pos1 == 0){// 证明碰到最上侧，需要向下动
                     posmode1=false;
 				}
-				if (pos2 == -730){// 证明碰到最右侧，需要向左动
+				if (pos2 == -725){// 证明碰到最右侧，需要向左动
                     posmode2=true;
 				}
 				if (pos2 == 0){// 证明碰到最左侧，需要向右动
@@ -171,8 +164,15 @@ int main( int argc, char* args[] )
                 SDL_Rect destinationRect = {pos2, pos1, 2000,2000};
                 SDL_RenderClear(renderer);
                 SDL_RenderCopy(renderer, gPNGSurface, &srcrect, &destinationRect);
+                DrawUI(renderer);
+
                 SDL_RenderPresent(renderer);
-				SDL_UpdateWindowSurface( gWindow );
+
+
+
+
+                SDL_UpdateWindowSurface( gWindow );
+
 
 
 			}

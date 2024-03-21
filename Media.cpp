@@ -5,12 +5,12 @@
 #include <SDL_mixer.h>
 
 #include "main.h"
-#include "media.h"
+#include "init.h"
 
 
 //Current displayed PNG image
 SDL_Texture* gPNGSurface;
-SDL_Renderer* renderer;
+
 
 // 加载背景
 bool loadBackground()
@@ -20,7 +20,7 @@ bool loadBackground()
 	bool success = true;
 
 
-	std::tie(gPNGSurface, renderer) = loadSurface( "res/image/loaded.png" );
+	gPNGSurface = loadSurface( "res/image/loaded.png" );
 	if (renderer == NULL){
 
 
@@ -42,7 +42,7 @@ bool loadBackground()
 // 播放音乐
 bool PlayMusic()
 {
-    Mix_Music *music = Mix_LoadMUS("ww.ogg");
+    Mix_Music *music = Mix_LoadMUS("res/music/ww.ogg");
 
     // 加载音乐文件失败
     if (!music) {

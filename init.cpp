@@ -4,7 +4,8 @@
 #include <SDL_mixer.h>
 
 #include "main.h"
-
+SDL_Renderer* renderer;
+SDL_Window* gWindow;
 
 // 音频初始化
 int sound_init()
@@ -44,9 +45,11 @@ bool init(){// 初始化
 
 
 		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN );
+		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN);
         // SDL_WINDOW_FULLSCREEN
         // SDL_WINDOW_SHOW 原常量
+
+        renderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
 
 
 

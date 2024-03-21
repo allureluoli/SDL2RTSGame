@@ -5,28 +5,29 @@
 	<iostream>
 	<string>
 
-1710954374 source:c:\users\33454\desktop\维护中\sdl2rtsgame\main.cpp
+1710990325 source:c:\users\33454\desktop\维护中\sdl2rtsgame\main.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
 	"main.h"
 	"init.h"
 	"media.h"
+	"drawui.h"
 
-1710320699 c:\users\33454\desktop\维护中\sdl2rtsgame\init.h
+1710988661 c:\users\33454\desktop\维护中\sdl2rtsgame\init.h
 
-1710954323 source:c:\users\33454\desktop\维护中\sdl2rtsgame\init.cpp
+1710988688 source:c:\users\33454\desktop\维护中\sdl2rtsgame\init.cpp
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
 	<SDL_mixer.h>
 	"main.h"
 
-1710910541 c:\users\33454\desktop\维护中\sdl2rtsgame\main.h
+1710990393 c:\users\33454\desktop\维护中\sdl2rtsgame\main.h
 
-1710954285 c:\users\33454\desktop\维护中\sdl2rtsgame\media.h
+1710988980 c:\users\33454\desktop\维护中\sdl2rtsgame\media.h
 
-1710954258 source:c:\users\33454\desktop\维护中\sdl2rtsgame\media.cpp
+1710989005 source:c:\users\33454\desktop\维护中\sdl2rtsgame\media.cpp
 	<iostream>
 	<SDL_image.h>
 	<utility>
@@ -34,4 +35,11 @@
 	<SDL_mixer.h>
 	"main.h"
 	"media.h"
+
+1710988083 source:c:\users\33454\desktop\维护中\sdl2rtsgame\drawui.cpp
+	<iostream>
+	<SDL.h>
+	"main.h"
+
+1710988073 c:\users\33454\desktop\维护中\sdl2rtsgame\drawui.h
 
