@@ -1,14 +1,25 @@
 #include <iostream>
+#include <sstream>
 #include <SDL.h>
+#include <SDL_ttf.h>
+
 #include "main.h"
 #include "init.h"
 
+SDL_Texture* UI;
+SDL_Rect destinationRect;
+
+SDL_Color textColor = {255, 255, 255};
+
+SDL_Surface* textSurface;
+SDL_Texture* textTexture;
+
+
 // 先画菜单的UI
-bool DrawUI(SDL_Renderer* renderer)
+void DrawUI()
 {
+
     //std::tie(gPNGSurface, renderer) = loadSurface( "res/image/loaded.png" );
-
-
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // 设置为白色
 
     // 外框
@@ -27,23 +38,83 @@ bool DrawUI(SDL_Renderer* renderer)
     // 输入框
     SDL_RenderDrawLine(renderer, 25, 115, 255, 115);
     SDL_RenderDrawLine(renderer, 25, 115, 25, 140);
+
     SDL_RenderDrawLine(renderer, 25, 140, 255, 140);
     SDL_RenderDrawLine(renderer, 255, 115, 255, 140);
 
-    //SDL_Rect srcrect = {0, 0, 1920, 1080};
-    SDL_Texture* UI;
-    SDL_Rect destinationRect;
     destinationRect = {53, 78, 27, 13};
     UI = loadSurface("res/image/power.png" );
     SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
+    SDL_DestroyTexture(UI);
+
     destinationRect = {30, 78, 20, 13};
     UI = loadSurface("res/image/single.png" );
     SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
+    SDL_DestroyTexture(UI);
+
     destinationRect = {40, 600, 75, 75};
     UI = loadSurface("res/image/Logo2.png" );
     SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
+    SDL_DestroyTexture(UI);
+
     destinationRect = {40, 570, 75, 45};
     UI = loadSurface("res/image/gamelogo2.png" );
     SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
+    SDL_DestroyTexture(UI);
+
+    UI = nullptr;
+
+
+    std::stringstream ss1;
+    ss1 << "Time: " << seconds;
+    std::string str1 = ss1.str();
+    const char* charValue1 = str1.c_str();
+
+    std::stringstream ss2;
+    ss2 << "Fps: " << currentFPS;
+    std::string str2 = ss2.str();
+    const char* charValue2 = str2.c_str();
+
+
+    textSurface = TTF_RenderText_Solid(font, charValue1, textColor);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_Rect dstRect = {30, 30, textSurface->w/2, textSurface->h/2}; // 文字显示位置
+    SDL_RenderCopy(renderer, textTexture, NULL, &dstRect); // 渲染纹理
+    SDL_DestroyTexture(textTexture);
+
+    textSurface = TTF_RenderText_Solid(font, charValue2, textColor);
+    dstRect = {33, 45, textSurface->w/2, textSurface->h/2}; // 文字显示位置
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_RenderCopy(renderer, textTexture, NULL, &dstRect); // 渲染纹理
+    SDL_DestroyTexture(textTexture);
+
+
+
+
+}
+
+bool TextInputFlag = false;
+
+void TextInput(int pos1, int pos2){
+
+    SDL_Rect rect = {25, 115, 255, 140};
+
+    if (pos1 > rect.x && pos1 < rect.x + rect.w && pos2 > rect.y && pos2 < rect.y + rect.h){
+        TextInputFlag = true;
+    }
+    else{
+        TextInputFlag = false; // 设置Flag来确定文本框的状态
+    }
+}
+
+void InputInText(const std::string &text){
+
+
+    //textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+    //SDL_Rect dstRect = {33, 100, textSurface->w, textSurface->h}; // 文字显示位置
+    //textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    //SDL_RenderCopy(renderer, textTexture, NULL, &dstRect); // 渲染纹理
+    //SDL_DestroyTexture(textTexture);
+
 
 }

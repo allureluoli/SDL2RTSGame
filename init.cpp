@@ -2,10 +2,13 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
 
 #include "main.h"
 SDL_Renderer* renderer;
 SDL_Window* gWindow;
+TTF_Font* font;
 
 // 音频初始化
 int sound_init()
@@ -29,7 +32,7 @@ int sound_init()
 const int SCREEN_WIDTH = 1920;
 const int SCREEN_HEIGHT = 1080;
 
-bool init(){// 初始化
+bool init(){
 	//Initialization flag
 	bool success = true;
 
@@ -52,12 +55,10 @@ bool init(){// 初始化
         renderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
 
 
-
-
 		if( gWindow == NULL ) // 判断一下窗口返回值是不是Null
 		{
 			std::cout << "Window could not be created! SDL Error: %s\n" << SDL_GetError() << std::endl;
-			success = false;// 也就意味着初始化失败
+			success = false;// 初始化失败
 		}
 		else
 		{
@@ -65,8 +66,8 @@ bool init(){// 初始化
 		    std::cout << "Window can be created!\n" << std::endl;
 
 			int imgFlags = IMG_INIT_PNG;
-			//这里使用了按位与运算符&，将IMG_Init的返回值与imgFlags进行按位与操作。
-			//这个操作可以用来检查初始化是否包含了imgFlags所代表的标志位。如果包含了，结果值将等于imgFlags；否则将不等于imgFlags。
+			//将IMG_Init的返回值与imgFlags进行按位与操作。
+			//检查初始化是否包含了imgFlags所代表的标志位。如果包含了，结果值将等于imgFlags；否则将不等于imgFlags。
 			if( !( IMG_Init( imgFlags ) & imgFlags ) )
 
 			{
@@ -75,14 +76,26 @@ bool init(){// 初始化
 			}
 			else
 			{
-
                     std::cout << "SDL_image 初始化成功 \n" << IMG_GetError() << std::endl;
 			}
 
+             // 音频初始化
+            if (sound_init() == 0){
+                 std::cout << "SDL_mixer 初始化成功 \n" << std::endl;
+            }else{
+                 std::cout << "SDL_mixer 初始化成功 \n" << IMG_GetError() << std::endl;
+            }
 
-            sound_init(); // 音频初始化
 
-            std::cout << "SDL_mixer 初始化成功 \n" << IMG_GetError() << std::endl;
+            // 字体初始化
+            if (TTF_Init() == 0){
+                 font = TTF_OpenFont("res/font/milknolri-rp4zo.ttf", 24); //加载字体
+                 std::cout << "SDL_ttf 初始化成功 \n"  << std::endl;
+            }else{
+                 std::cout << "SDL_ttf 初始化失败 \n" << IMG_GetError() << std::endl;
+            }
+
+
 
 
 
