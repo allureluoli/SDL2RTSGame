@@ -139,7 +139,7 @@ int main( int argc, char* args[] )
 				if (pos1 == 0){// 证明碰到最上侧，需要向下动
                     posmode1=false;
 				}
-				if (pos2 == -725){// 证明碰到最右侧，需要向左动
+				if (pos2 == -720){// 证明碰到最右侧，需要向左动
                     posmode2=true;
 				}
 				if (pos2 == 0){// 证明碰到最左侧，需要向右动
@@ -160,17 +160,13 @@ int main( int argc, char* args[] )
 
 
                 // 设置目标矩形，放大1.5倍
-                SDL_Rect srcrect = {0, 0, 1920, 1080}; // 调整位置      后两个参数是裁剪图像的像素
+
                 SDL_Rect destinationRect = {pos2, pos1, 2000,2000};
                 SDL_RenderClear(renderer);
-                SDL_RenderCopy(renderer, gPNGSurface, &srcrect, &destinationRect);
+                SDL_RenderCopy(renderer, gPNGSurface, NULL, &destinationRect);
                 DrawUI(renderer);
 
                 SDL_RenderPresent(renderer);
-
-
-
-
                 SDL_UpdateWindowSurface( gWindow );
 
 

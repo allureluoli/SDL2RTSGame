@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "main.h"
+#include "init.h"
 
 // 先画菜单的UI
 bool DrawUI(SDL_Renderer* renderer)
@@ -29,6 +30,20 @@ bool DrawUI(SDL_Renderer* renderer)
     SDL_RenderDrawLine(renderer, 25, 140, 255, 140);
     SDL_RenderDrawLine(renderer, 255, 115, 255, 140);
 
-    SDL_Rect srcrect = {0, 0, 1920, 1080};
+    //SDL_Rect srcrect = {0, 0, 1920, 1080};
+    SDL_Texture* UI;
+    SDL_Rect destinationRect;
+    destinationRect = {53, 78, 27, 13};
+    UI = loadSurface("res/image/power.png" );
+    SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
+    destinationRect = {30, 78, 20, 13};
+    UI = loadSurface("res/image/single.png" );
+    SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
+    destinationRect = {40, 600, 75, 75};
+    UI = loadSurface("res/image/Logo2.png" );
+    SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
+    destinationRect = {40, 570, 75, 45};
+    UI = loadSurface("res/image/gamelogo2.png" );
+    SDL_RenderCopy(renderer, UI, NULL, &destinationRect);
 
 }

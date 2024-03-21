@@ -40,6 +40,7 @@ bool loadBackground()
 
 
 // 播放音乐
+// 后面改成自动读取文件夹内音乐的
 bool PlayMusic()
 {
     Mix_Music *music = Mix_LoadMUS("res/music/ww.ogg");
