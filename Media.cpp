@@ -47,13 +47,10 @@ void PlayMusic()
 
     // 加载音乐文件失败
     if (!music) {
-
         std::cout <<  "音频加载失败" <<   Mix_GetError() << std::endl;
     }
     else{
-
         std::cout <<  "ww.ogg 读取成功" << std::endl;
-
     }
 
     Mix_PlayMusic(music, -1);

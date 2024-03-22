@@ -26,11 +26,11 @@ int sound_init()
 
 }
 
-// 因为这些是第三方库，所以需要再次 include
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 1920;
 const int SCREEN_HEIGHT = 1080;
+
 
 bool init(){
 	//Initialization flag

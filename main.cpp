@@ -67,18 +67,25 @@ SDL_Texture* loadSurface( std::string path )// 接受path 返回SDL_Surface* 指
 }
 
 int pos1, pos2 = 0;
-
+float ddpi, hdpi, vdpi;
 bool posmode1,posmode2;
 
-
+int displayIndex;// 显示器索引，通常为0
+SDL_DisplayMode DM;
 
 std::string  text;
 
 int main( int argc, char* args[] )
 {
-    init();
-    text = " ";
 
+    init();
+    displayIndex = 0;
+    if (SDL_GetCurrentDisplayMode(displayIndex, &DM) != 0) {
+        SDL_Log("无法获取显示模式信息: %s\n", SDL_GetError());
+        return 1;
+    }
+
+    text = " ";
 
     if (renderer == NULL) {
     // 处理渲染器创建失败的情况
@@ -89,7 +96,6 @@ int main( int argc, char* args[] )
 	std::cout << "欢迎来到sdl2" << std::endl;
 
     PlayMusic(); // 音频播放
-
 
 		//加载图像
 		if( !loadBackground() )
@@ -107,7 +113,7 @@ int main( int argc, char* args[] )
 
 			//While application is running
 
-			while( !quit )
+			while(!quit)
 			{
 
                 frameStart = SDL_GetTicks(); // 记录每帧开始时间
@@ -121,7 +127,7 @@ int main( int argc, char* args[] )
 				{
 				    if(e.type == SDL_TEXTINPUT){
                         if (TextInputFlag){
-                            // SDL_Log(e.edit.text);
+
                             text += e.edit.text;
                         }
 				    }
@@ -145,13 +151,13 @@ int main( int argc, char* args[] )
 				}
                 // 那么一共有四个移动模式，向右动，向下动，向左动，向上动
                 // pos1是X pos2是Y
-				if (pos1 == -1270){//证明碰到了最下侧，则需要向上动
+				if (pos1 == -DM.w){//证明碰到了最下侧，则需要向上动
                     posmode1=true;
 				}
 				if (pos1 == 0){// 证明碰到最上侧，需要向下动
                     posmode1=false;
 				}
-				if (pos2 == -720){// 证明碰到最右侧，需要向左动
+				if (pos2 == -DM.h){// 证明碰到最右侧，需要向左动
                     posmode2=true;
 				}
 				if (pos2 == 0){// 证明碰到最左侧，需要向右动
@@ -173,7 +179,6 @@ int main( int argc, char* args[] )
 
                 SDL_Rect destinationRect = {pos2, pos1, 2000,2000};
                 SDL_RenderClear(renderer);
-
                 SDL_RenderCopy(renderer, gPNGSurface, NULL, &destinationRect);
 
 
@@ -203,8 +208,6 @@ int main( int argc, char* args[] )
                 frameEnd = SDL_GetTicks();
                 int frameTime = frameEnd - frameStart;
                 currentFPS = 1000 / frameTime;
-
-
                 SDL_UpdateWindowSurface(gWindow);
 
 			}
