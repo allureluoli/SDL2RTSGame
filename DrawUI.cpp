@@ -99,6 +99,7 @@ void TextInput(int pos1, int pos2){
 
     SDL_Rect rect = {25, 115, 255, 140};
 
+
     if (pos1 > rect.x && pos1 < rect.x + rect.w && pos2 > rect.y && pos2 < rect.y + rect.h){
         TextInputFlag = true;
     }
@@ -107,14 +108,20 @@ void TextInput(int pos1, int pos2){
     }
 }
 
-void InputInText(const std::string &text){
+void InputInText(){
 
 
-    //textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
-    //SDL_Rect dstRect = {33, 100, textSurface->w, textSurface->h}; // 文字显示位置
-    //textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    //SDL_RenderCopy(renderer, textTexture, NULL, &dstRect); // 渲染纹理
-    //SDL_DestroyTexture(textTexture);
+
+    if (!text.empty()){
+    textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor);
+    SDL_Rect dstRect = {33, 120, textSurface->w/1.7, textSurface->h/1.7}; // 文字显示位置
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_RenderCopy(renderer, textTexture, NULL, &dstRect); // 渲染纹理
+    SDL_DestroyTexture(textTexture);
+
+
+
+    }
 
 
 }

@@ -4,6 +4,6 @@
 bool DrawUI();
 extern bool TextInputFlag;
 void TextInput(int pos1,int pos2);
-void InputInText(const std::string &text);
+void InputInText();
 
 #endif // DRAWUI_H_INCLUDED

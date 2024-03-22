@@ -72,11 +72,12 @@ bool posmode1,posmode2;
 
 
 
+std::string  text;
 
-const char* text = "AAAAA";
 int main( int argc, char* args[] )
 {
     init();
+    text = " ";
 
 
     if (renderer == NULL) {
@@ -113,8 +114,6 @@ int main( int argc, char* args[] )
 
                 // 计算并显示游戏运行时间
 
-
-
                 seconds = (frameStart / 1000) % 60;
 
 				//Handle events on queue
@@ -123,8 +122,7 @@ int main( int argc, char* args[] )
 				    if(e.type == SDL_TEXTINPUT){
                         if (TextInputFlag){
                             // SDL_Log(e.edit.text);
-                            text = e.edit.text;
-
+                            text += e.edit.text;
                         }
 				    }
 					//User requests quit
@@ -137,14 +135,13 @@ int main( int argc, char* args[] )
                             int mouseY = e.button.y;
 
                             TextInput(mouseX, mouseY);
-
                             }
                         }
-					if (e.type == SDL_KEYDOWN) {
-					//if ( e.key.keysym.sym == SDLK_a){
-                           // pos1+=100; 键盘输入
-
-					}
+                if (e.key.keysym.sym == SDLK_BACKSPACE && TextInputFlag && !text.empty()) {
+                    // 在这里处理按下退格键的逻辑
+                    // 例如，删除字符串中的最后一个字符
+                    text.pop_back();
+                }
 				}
                 // 那么一共有四个移动模式，向右动，向下动，向左动，向上动
                 // pos1是X pos2是Y
@@ -182,10 +179,24 @@ int main( int argc, char* args[] )
 
                 DrawUI();
                 if(seconds%2 != 0 && TextInputFlag){
-                    SDL_RenderDrawLine(renderer, 30, 120, 30, 136);// 设置默认坐标 然后根据字符长度来判断坐标位置
-                }
+                    int len = text.size();
+                    if (len > 5){
+                        len --;
+                    }
+                    if (len > 10){
+                        len --;
+                    }
+                    if (len > 15){
+                        len --;
+                    }
+                    if (len > 20){
+                        len --;
+                    }
 
-                InputInText(text);
+                    SDL_RenderDrawLine(renderer, 30+len*10, 120, 30+len*10, 136);// 设置默认坐标 然后根据字符长度来判断坐标位置
+                }
+                InputInText();
+
                 SDL_RenderPresent(renderer);
 
 
