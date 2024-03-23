@@ -34,7 +34,6 @@ bool loadBackground()
 
 		success = false;
 	}
-
 	return success;// 返回成功
 }
 

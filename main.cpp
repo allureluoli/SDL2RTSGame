@@ -71,7 +71,7 @@ float ddpi, hdpi, vdpi;
 bool posmode1,posmode2;
 
 int displayIndex;// 显示器索引，通常为0
-SDL_DisplayMode DM;
+
 
 std::string  text;
 
@@ -79,21 +79,44 @@ int main( int argc, char* args[] )
 {
 
     init();
-    displayIndex = 0;
-    if (SDL_GetCurrentDisplayMode(displayIndex, &DM) != 0) {
-        SDL_Log("无法获取显示模式信息: %s\n", SDL_GetError());
+
+
+
+    float ddpi, hdpi, vdpi;
+    if (SDL_GetDisplayDPI(displayIndex, &ddpi, &hdpi, &vdpi) != 0) {
+        SDL_Log("无法获取显示器DPI信息: %s\n", SDL_GetError());
+        SDL_Quit();
         return 1;
     }
+    SDL_Log("逻辑 DPI: ", ddpi);
+    SDL_Log("水平DPI：%f\n", hdpi);
+    SDL_Log("垂直DPI：%f\n", vdpi);
+
+
+    SDL_Rect displayBounds;
+    if (SDL_GetDisplayBounds(0, &displayBounds) != 0) {
+        SDL_Log("无法获取显示器尺寸: %s", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
+
+    // 打印显示器尺寸信息到SDL日志
+    SDL_Log("显示器尺寸:");
+    SDL_Log("左上角坐标: (%d, %d)", displayBounds.x, displayBounds.y);
+    SDL_Log("宽度: %d", displayBounds.w);
+    SDL_Log("高度: %d", displayBounds.h);
+
+
 
     text = " ";
 
     if (renderer == NULL) {
     // 处理渲染器创建失败的情况
-    std::cout << "渲染器创建失败" <<  SDL_GetError()<<std::endl;
+    SDL_Log("渲染器创建失败",SDL_GetError());
     }
 
 	//Start up SDL and create window
-	std::cout << "欢迎来到sdl2" << std::endl;
+	SDL_Log("欢迎来到sdl2");
 
     PlayMusic(); // 音频播放
 
@@ -127,7 +150,6 @@ int main( int argc, char* args[] )
 				{
 				    if(e.type == SDL_TEXTINPUT){
                         if (TextInputFlag){
-
                             text += e.edit.text;
                         }
 				    }
@@ -151,13 +173,17 @@ int main( int argc, char* args[] )
 				}
                 // 那么一共有四个移动模式，向右动，向下动，向左动，向上动
                 // pos1是X pos2是Y
-				if (pos1 == -DM.w){//证明碰到了最下侧，则需要向上动
+
+                // 算法 默认 * 1.5/(DPI / 64)
+
+				if (pos1 == displayBounds.h-2500){//证明碰到了最下侧，则需要向上动
                     posmode1=true;
+                    //
 				}
 				if (pos1 == 0){// 证明碰到最上侧，需要向下动
                     posmode1=false;
 				}
-				if (pos2 == -DM.h){// 证明碰到最右侧，需要向左动
+				if (pos2 ==  displayBounds.w-2500){// 证明碰到最右侧，需要向左动
                     posmode2=true;
 				}
 				if (pos2 == 0){// 证明碰到最左侧，需要向右动
@@ -175,9 +201,8 @@ int main( int argc, char* args[] )
                 else{
                     pos2--;
                 }
-                // 设置目标矩形，放大1.5倍
 
-                SDL_Rect destinationRect = {pos2, pos1, 2000,2000};
+                SDL_Rect destinationRect = {pos2, pos1, 2500,2500};
                 SDL_RenderClear(renderer);
                 SDL_RenderCopy(renderer, gPNGSurface, NULL, &destinationRect);
 
@@ -203,6 +228,7 @@ int main( int argc, char* args[] )
                 InputInText();
 
                 SDL_RenderPresent(renderer);
+
 
 
                 frameEnd = SDL_GetTicks();

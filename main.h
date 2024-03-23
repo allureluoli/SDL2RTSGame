@@ -6,7 +6,6 @@ extern SDL_Surface* gScreenSurface;
 extern int currentFPS;
 extern int seconds;
 extern std::string  text;
-extern SDL_DisplayMode DM;
 extern float hdpi, vdpi;
 SDL_Texture* loadSurface(std::string path);
 

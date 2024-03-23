@@ -44,7 +44,7 @@ bool init(){
 	}
 	else
 	{
-        std::cout << "成功初始化所有内容\n" <<std::endl;
+        SDL_Log("成功初始化所有内容\n");
 
 
 		//Create window
@@ -76,28 +76,24 @@ bool init(){
 			}
 			else
 			{
-                    std::cout << "SDL_image 初始化成功 \n" << IMG_GetError() << std::endl;
+                    SDL_Log("SDL_image 初始化成功 \n",IMG_GetError());
 			}
 
              // 音频初始化
             if (sound_init() == 0){
-                 std::cout << "SDL_mixer 初始化成功 \n" << std::endl;
+                 SDL_Log("SDL_mixer 初始化成功 \n");
             }else{
-                 std::cout << "SDL_mixer 初始化成功 \n" << IMG_GetError() << std::endl;
+                 SDL_Log("SDL_mixer 初始化成功 \n", IMG_GetError() );
             }
 
 
             // 字体初始化
             if (TTF_Init() == 0){
-                 font = TTF_OpenFont("res/font/milknolri-rp4zo.ttf", 24); //加载字体
-                 std::cout << "SDL_ttf 初始化成功 \n"  << std::endl;
+                 font = TTF_OpenFont("res/font/FangZhengKaiTiJianTi-1.ttf", 24); //加载字体
+                 SDL_Log("SDL_ttf 初始化成功 \n" );
             }else{
-                 std::cout << "SDL_ttf 初始化失败 \n" << IMG_GetError() << std::endl;
+                 SDL_Log("SDL_ttf 初始化失败 \n",IMG_GetError()) ;
             }
-
-
-
-
 
 
 		}
